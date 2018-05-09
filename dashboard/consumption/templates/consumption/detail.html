@@ -1,5 +1,82 @@
 {% extends 'consumption/layout.html' %}
 
 {% block content %}
+    <h1>User #{{ account.id }}</h1>
 
+    <table class="table table-striped">
+        <tr>
+            <td width="50%">Area</td>
+            <td>{{ account.area.name }}</td>
+        </tr>
+        <tr>
+            <td>Tariff</td>
+            <td>{{ account.tariff.name }}</td>
+        </tr>
+    </table>
+
+    <div id="averagePlot"></div>
+    <div id="weekdayPlot"></div>
+
+    <a class="btn btn-primary" href="{% url 'summary' %}">Back to summary</a>
+
+    <script>
+        var data = [
+            {
+                name: "Usage",
+                x: {{ keys|safe }},
+                y: {{ usage|safe }},
+                type: 'scatter',
+                fill: 'tozeroy',
+            }
+        ]
+
+        Plotly.newPlot('averagePlot', data);
+
+        var data = [
+            {
+                name: "Monday",
+                x: {{ weekdays.0.time|safe }},
+                y: {{ weekdays.0.average|safe }},
+                type: 'scatter',
+            },
+            {
+                name: "Tuesday",
+                x: {{ weekdays.1.time|safe }},
+                y: {{ weekdays.1.average|safe }},
+                type: 'scatter',
+            },
+            {
+                name: "Wednesday",
+                x: {{ weekdays.2.time|safe }},
+                y: {{ weekdays.2.average|safe }},
+                type: 'scatter',
+            },
+            {
+                name: "Thursday",
+                x: {{ weekdays.3.time|safe }},
+                y: {{ weekdays.3.average|safe }},
+                type: 'scatter',
+            },
+            {
+                name: "Friday",
+                x: {{ weekdays.4.time|safe }},
+                y: {{ weekdays.4.average|safe }},
+                type: 'scatter',
+            },
+            {
+                name: "Saturday",
+                x: {{ weekdays.5.time|safe }},
+                y: {{ weekdays.5.average|safe }},
+                type: 'scatter',
+            },
+            {
+                name: "Sunday",
+                x: {{ weekdays.6.time|safe }},
+                y: {{ weekdays.6.average|safe }},
+                type: 'scatter',
+            }
+        ]
+
+        Plotly.newPlot('weekdayPlot', data, { title: 'Average usage during days of week' });
+    </script>
 {% endblock %}

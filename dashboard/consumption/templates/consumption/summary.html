@@ -2,6 +2,62 @@
 
 {% block content %}
 
-<h1>{{message}}</h1>
+<h1>Summary</h1>
+
+<div id="sumPlot"></div>
+<div id="averagePlot"></div>
+
+<table class="table table-striped">
+    <tr>
+        <th>User</th>
+        <th>Area</th>
+        <th>Tariff</th>
+    </tr>
+    {% for user in users %}
+        <tr>
+            <td><a href="{% url 'detail' user.id %}">{{ user.id }}</a></td>
+            <td>{{ user.area.name }}</td>
+            <td>{{ user.tariff.name }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+<script>
+    var data = [
+        {
+            name: "Summed Usage",
+            x: {{ keys|safe }},
+            y: {{ sum|safe }},
+            type: 'scatter',
+            fill: 'tozeroy',
+        }
+    ];
+    var data2 = [
+        {
+            name: "Maximum Usage",
+            x: {{ keys|safe }},
+            y: {{ max|safe }},
+            type: 'scatter',
+            fill: 'tozeroy',
+        },
+        {
+            name: "Average Usage",
+            x: {{ keys|safe }},
+            y: {{ average|safe }},
+            type: 'scatter',
+            fill: 'tozeroy',
+        },
+        {
+            name: "Minimum Usage",
+            x: {{ keys|safe }},
+            y: {{ min|safe }},
+            type: 'scatter',
+            fill: 'tozeroy',
+        }
+    ]
+
+    Plotly.newPlot('sumPlot', data);
+    Plotly.newPlot('averagePlot', data2);
+</script>
 
 {% endblock %}
